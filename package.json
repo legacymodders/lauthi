@@ -1,0 +1,14 @@
+{
+  "name": "lauthi",
+  "version": "1.0.0",
+  "description": "a roblox whitelist authenticator api",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "LegacyModders",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
