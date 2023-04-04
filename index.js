@@ -17,8 +17,6 @@ try {
 let users = Object.keys(whitelist);
 let HWIDs = Object.values(whitelist);
 
-
-
 app.get("/", (req, res) => {
     if (showHWID) {
         console.log(req.headers["sw-fingerprint"])
