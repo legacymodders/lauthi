@@ -8,33 +8,46 @@ let whitelist;
 const fs = require("fs");
 try {
     let jsonString = fs.readFileSync("./whitelist.json");
-    whitelist = JSON.parse(jsonString)[0];
+    whitelist = JSON.parse(jsonString);
 } catch(err) {
     console.log("ERROR: no whitelist file found! shutting lauthi down.")
     process.exit(1);
 }
 
-let users = Object.keys(whitelist);
-let HWIDs = Object.values(whitelist);
+let count = Object.keys(whitelist);
+let users = [];
 let HWID = "";
 let syn = false;
 let sw = false;
 let krnl = false;
+let resp = false;
 
+// get usernames of all users in file
+for (let i = 0; i < count.length; i++) {
+    users.push(Object.keys(whitelist[i]));
+}
+
+// api request
 app.get("/", (req, res) => {
+
+    // if scriptware
     if (!(req.headers["sw-fingerprint"] == undefined)) {
         HWID = req.headers["sw-fingerprint"];
         sw = true;
         syn = false;
         krnl = false;
 
-    } else if (!(req.headers["syn-fingerprint"] == undefined)) {
+    } 
+    // if synapse
+    else if (!(req.headers["syn-fingerprint"] == undefined)) {
         HWID = req.headers["syn-fingerprint"];
         syn = true;
         sw = false;
         krnl = false;
 
-    } else if (!(req.headers["krnl-hwid"] == undefined)) {
+    } 
+    // if krnl
+    else if (!(req.headers["krnl-hwid"] == undefined)) {
         HWID = req.headers["krnl-hwid"];
         krnl = true;
         syn = false;
@@ -44,48 +57,59 @@ app.get("/", (req, res) => {
         HWID = undefined;
     }
 
+    // show HWID if wanted
     if (showHWID) {
         console.log(HWID);
     }
 
-    for (let i = 0; i < users.length; i++) {
-        if (HWID == HWIDs[i]) {
-            res.send([true, users[i]]);
-            return;
-        }
-
+    // verification
+    for (let i = 0; i < users.length + 1; i++) {
+        // if scriptware
         if (sw) {
-            if (!(HWIDs[i][0] == "")) {
-                console.log("SCRIPTWARE");
-                if (HWID == HWIDs[i][0]) {
+            for (let i = 0; i < users.length; i++) {
+                let kHWID = whitelist[i][users[i][0]][0];
+
+                if (kHWID == HWID) {
                     res.send([true, users[i]]);
-                    return;
+                    resp = true;
+                    break;
                 }
             }
-        }
-    
-        if (syn) {
-            if (!(HWIDs[i][1] == "")) {
-                console.log("SYNAPSE");
-                if (HWID == HWIDs[i][1]) {
-                    res.send([true, users[i]]);
-                    return;
-                }
-            }
+            break;
         }
 
-        if (krnl) {
-            if (!(HWIDs[i][2] == "")) {
-                console.log("KRNL");
-                if (HWID == HWIDs[i][2]) {
+        // if synapse
+        if (syn) {
+            for (let i = 0; i < users.length; i++) {
+                let kHWID = whitelist[i][users[i][0]][1];
+
+                if (kHWID == HWID) {
                     res.send([true, users[i]]);
-                    return;
+                    resp = true;
+                    break;
                 }
             }
+            break;
+        }
+
+        // if KRNL
+        if (krnl) {
+            for (let i = 0; i < users.length; i++) {
+                let kHWID = whitelist[i][users[i][0]][2];
+
+                if (kHWID == HWID) {
+                    res.send([true, users[i]]);
+                    resp = true;
+                    break;
+                }
+            }
+            break;
         }
     }
 
-    res.send([false, "whitelist failed."])
+    if (!(resp)) {
+        res.send([false, "whitelist failed."]);
+    }
 });
 
 app.listen(port, () => {
