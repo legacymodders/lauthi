@@ -11,4 +11,5 @@ if you do not have a HWID to fill the spot then leave it blank.
 e.g. <pre><code>{"legacy modders":["hitsdurhgirudhtidsufhgkdfjhgdf","",""]}</code></pre>
 
 tutorial is outdated but will still give you the basics of how to setup the lauthi server + client
+<br>
 [tutorial OUTDATED](https://www.youtube.com/watch?v=LAVXXriQkvA&t=9s&ab_channel=LegacyModders)
