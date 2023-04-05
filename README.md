@@ -7,6 +7,7 @@ the second "" is for synapse HWID
 and the third "" is for KRNL HWID.
 
 if you do not have a HWID to fill the spot then leave it blank.
+\n
 e.g. {"legacy modders":["hitsdurhgirudhtidsufhgkdfjhgdf","",""]}
 
 [tutorial](https://www.youtube.com/watch?v=LAVXXriQkvA&t=9s&ab_channel=LegacyModders)
