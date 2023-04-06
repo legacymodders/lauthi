@@ -70,7 +70,7 @@ app.get("/", (req, res) => {
                 let kHWID = whitelist[i][users[i][0]][0];
 
                 if (kHWID == HWID) {
-                    res.send([true, users[i]]);
+                    res.send(`true,${users[i]}`);
                     resp = true;
                     break;
                 }
@@ -84,7 +84,7 @@ app.get("/", (req, res) => {
                 let kHWID = whitelist[i][users[i][0]][1];
 
                 if (kHWID == HWID) {
-                    res.send([true, users[i]]);
+                    res.send(`true,${users[i]}`);
                     resp = true;
                     break;
                 }
@@ -98,7 +98,7 @@ app.get("/", (req, res) => {
                 let kHWID = whitelist[i][users[i][0]][2];
 
                 if (kHWID == HWID) {
-                    res.send([true, users[i]]);
+                    res.send(`true,${users[i]}`);
                     resp = true;
                     break;
                 }
@@ -108,7 +108,7 @@ app.get("/", (req, res) => {
     }
 
     if (!(resp)) {
-        res.send([false, "whitelist failed."]);
+        res.send("false,whitelist failed.");
     }
 });
 
